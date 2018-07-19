@@ -28,7 +28,7 @@ class ReadWorker(Runner):
 	def work(self, client, address):
 		with client:
 			while self.running:
-				data = client.recv[cls.CHUNK_SIZE]
+				data = client.recv(ReadWorker.CHUNK_SIZE)
 				self.message_queue.put(data)
 
 

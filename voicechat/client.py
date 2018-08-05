@@ -6,8 +6,8 @@ import pyaudio
 import threading
 from array import array
 
-HOST = 'localhost'
-PORT = int(sys.argv[1])
+HOST = str(sys.argv[1])
+PORT = int(sys.argv[2])
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16

@@ -1,17 +1,16 @@
-# Echo client program
 import socket
 import time
 import sys
 import pyaudio
 import threading
-from array import array
+import numpy as np
 
 HOST = str(sys.argv[1])
 PORT = int(sys.argv[2])
 
-print(HOST, PORT)
+print(f'Connecting to: {HOST}, {PORT}')
 
-CHUNK = 1024
+CHUNK = 512
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
@@ -41,12 +40,13 @@ def send_data():
 	prev_vol = 0
 	while True:
 		try:
-			data_chunk = array('h', send_stream.read(CHUNK))
+			string_audio = send_stream.read(CHUNK)
+			data_chunk = np.fromstring(string_audio, dtype=np.int16)
 			vol = max(data_chunk)
 			smoother_vol = (vol+prev_vol)/2
-			print(smoother_vol, vol)
 
 			if(smoother_vol >= MIN_VOLUME):
+				print(f'size: {len(bytes(data_chunk))}')
 				s.sendall(data_chunk)
 			prev_vol = vol
 		except Exception as e:

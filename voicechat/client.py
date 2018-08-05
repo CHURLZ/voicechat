@@ -9,11 +9,13 @@ from array import array
 HOST = str(sys.argv[1])
 PORT = int(sys.argv[2])
 
+print(HOST, PORT)
+
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-MIN_VOLUME = int(sys.argv[2])
+MIN_VOLUME = int(sys.argv[3])
 p = pyaudio.PyAudio()
 
 

@@ -29,7 +29,7 @@ class ReadWorker(Runner):
 		with client:
 			while self.running:
 				data = client.recv(ReadWorker.CHUNK_SIZE)
-				self.message_queue.put(data)
+				self.message_queue.put((data, client))
 
 
 class BroadcastWorker(Runner):
@@ -51,5 +51,5 @@ class BroadcastWorker(Runner):
 	def work(self):
 		while self.running:
 			if self.clients and self.message_queue.qsize() > 0:
-				data = self.message_queue.get()
-				[c.send(data) for c in self.clients if c]
+				(data, client) = self.message_queue.get()
+				[c.send(data) for c in self.clients if c and c is not client]
